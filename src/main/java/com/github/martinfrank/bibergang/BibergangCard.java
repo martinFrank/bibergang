@@ -50,7 +50,7 @@ public class BibergangCard {
             }
             return "" + value;
         } else {
-            return "?";
+            return " ";
         }
     }
 

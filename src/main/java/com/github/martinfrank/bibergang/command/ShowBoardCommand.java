@@ -14,13 +14,13 @@ public class ShowBoardCommand extends Command<BibergangBoard> {
         super(board, "show");
     }
 
-    static void printGame(BibergangBoard board) {
-        BibergangGamePrinter.printGame(new PrintStream(System.out), board);//NOSONAR - it's a console app
+    void printGame(BibergangBoard board) {
+        getApplication().getPrinter().printGame(new PrintStream(System.out), board);//NOSONAR - it's a console app
     }
 
     @Override
     public Response execute(List<String> list) {
-        //FIXME print ME und print ALL
+        //FIXME print game or print endgame
         printGame(getApplication());
         return Response.success();
     }

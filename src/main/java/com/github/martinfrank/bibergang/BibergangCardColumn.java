@@ -40,4 +40,14 @@ public class BibergangCardColumn {
         }
         return null;
     }
+
+    public boolean isPair() {
+        if (topCard.isBiber()){
+            return true;
+        }
+        if(bottomCard.isBiber()){
+            return true;
+        }
+        return topCard.getValue() == bottomCard.getValue();
+    }
 }

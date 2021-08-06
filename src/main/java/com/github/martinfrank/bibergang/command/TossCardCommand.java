@@ -16,11 +16,10 @@ public class TossCardCommand extends Command<BibergangBoard>  {
 
     @Override
     public Response execute(List<String> parameter) {
-        //FIXME if player has only one open Card you may toss such simply
-        //FIXME otherwise he has to provide an legal slot wich will be revealed
         if (parameter.size() == 0 && getApplication().getCurrentPlayer().hasOptionFour()){
             getApplication().tossCard();
-            BibergangGamePrinter.printGame(System.out, getApplication());
+            getApplication().endPlayersTurn();
+//            getApplication().getPrinter().printGame(System.out, getApplication());
             return Response.success();
         }
 
@@ -34,7 +33,8 @@ public class TossCardCommand extends Command<BibergangBoard>  {
         }
         card.reveal();
         getApplication().tossCard();
-        BibergangGamePrinter.printGame(System.out, getApplication());
+        getApplication().endPlayersTurn();
+//        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

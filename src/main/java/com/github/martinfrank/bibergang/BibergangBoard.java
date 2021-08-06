@@ -5,7 +5,6 @@ import com.github.martinfrank.cli.CommandInterpreterProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
@@ -15,6 +14,7 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
     private final BibergangCardStack closedStack = new BibergangCardStack();
     private final BibergangCardStack openStack = new BibergangCardStack();
     private BibergangCard currentPlayersDrawnCard = null;
+    private final BibergangGamePrinter printer = new BibergangGamePrinter();
 
     public BibergangBoard(CommandInterpreterProvider commandInterpreterProvider) {
         this.commandInterpreterProvider = commandInterpreterProvider;
@@ -22,12 +22,11 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
 
     @Override
     public void endPlayersTurn() {
-        super.endPlayersTurn();
-        //FIXME check if all have (been) 'knocked'
-        if(getPlayers().stream().anyMatch(BibergangPlayer::hasLastTurnPlayed)){
+        if(getPlayers().stream().anyMatch(BibergangPlayer::hasKnocked)){
             getCurrentPlayer().setLastTurnPlayed();
             getCurrentPlayer().revealAll();
         }
+        super.endPlayersTurn();//switches to next Player
         startPlayersTurn();
     }
 
@@ -37,13 +36,18 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         LOGGER.debug("init Game");
         openStack.clear();
         closedStack.newBiberCardDeck();
-        IntStream.range(0,BibergangGame.AMOUNT_CARD_COLUMNS *2).
-                forEach(i -> getPlayers().forEach(p -> p.addStartCard(closedStack.drawTopCard())) );
+        addCardsToPlayers();
         BibergangCard drawnCards = closedStack.drawTopCard();
         drawnCards.reveal();
         openStack.addOnTop(drawnCards);
         getPlayers().forEach(BibergangPlayer::revealStartCards);
         startPlayersTurn();
+//        printer.printGame(System.out, this);
+    }
+
+    private void addCardsToPlayers() {
+        IntStream.range(0,BibergangGame.AMOUNT_CARD_COLUMNS *2).
+                forEach(i -> getPlayers().forEach(p -> p.addStartCard(closedStack.drawTopCard())) );
     }
 
     @Override
@@ -51,18 +55,20 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         super.startPlayersTurn();
         if(haveAllFinishLastTurn()){
             System.out.println("GAME OVER!!!");
-            //FIXME stop game here!
+//            printer.printGame(System.out, this);
             return;
         }
         getCurrentPlayer().resetDrawn();
+        printer.printGame(System.out, this);
 
         if (getPlayers().stream().anyMatch(BibergangPlayer::hasKnocked) ){
             System.out.println("WARNING - last round!");
         }
-        LOGGER.debug("start Players turn");
+//        LOGGER.debug("start Players turn");
     }
 
-    private boolean haveAllFinishLastTurn() {
+    /*visible for testing*/
+    boolean haveAllFinishLastTurn() {
         return getPlayers().stream().allMatch(BibergangPlayer::hasLastTurnPlayed);
     }
 
@@ -93,6 +99,10 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
     public void tossCard() {
         openStack.addOnTop(currentPlayersDrawnCard);
         currentPlayersDrawnCard = null;
+        if(getCurrentPlayer().hasKnocked() ){
+            System.out.println("I KNOCKED!");
+            getCurrentPlayer().setLastTurnPlayed();
+        }
     }
 
     public BibergangCard getCurrentDrawnCard() {
@@ -102,7 +112,7 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
     public void exchangeCard(String id) {
         BibergangCard from = getCurrentPlayer().getCardById(id);
         getCurrentPlayer().setCardById(currentPlayersDrawnCard, id);
-        if(from.isBiber() && !getCurrentPlayer().hasKnocked()) {
+        if(from.isBiber() && getCurrentPlayer().hasHiddenCards()) {
             from = getCurrentPlayer().moveBiber(from);
         }
         currentPlayersDrawnCard = from;
@@ -113,4 +123,8 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         }
     }
 
+
+    public BibergangGamePrinter getPrinter() {
+        return printer;
+    }
 }

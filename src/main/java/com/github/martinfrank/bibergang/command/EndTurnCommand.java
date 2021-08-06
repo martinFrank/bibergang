@@ -18,7 +18,7 @@ public class EndTurnCommand extends Command<BibergangBoard> {
     public Response execute(List<String> list) {
         BibergangBoard board = getApplication();
         board.endPlayersTurn();
-        BibergangGamePrinter.printGame(System.out, getApplication());
+        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

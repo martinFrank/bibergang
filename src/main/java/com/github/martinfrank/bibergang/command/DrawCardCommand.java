@@ -33,13 +33,13 @@ public class DrawCardCommand extends Command<BibergangBoard>  {
 
     private Response drawClosed() {
         getApplication().drawCurrentCardFromClosed();
-        BibergangGamePrinter.printGame(System.out, getApplication());
+        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 
     private Response drawOpen() {
         getApplication().drawCurrentCardFromOpen();
-        BibergangGamePrinter.printGame(System.out, getApplication());
+        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

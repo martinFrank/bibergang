@@ -16,7 +16,6 @@ public class ExchangeCardCommand extends Command<BibergangBoard>  {
 
     @Override
     public Response execute(List<String> parameter) {
-        //FIXME todo get slot
         if(parameter.size() != 1){
             return Response.fail("you must provide a valid card id");
         }
@@ -28,7 +27,8 @@ public class ExchangeCardCommand extends Command<BibergangBoard>  {
 
         getApplication().exchangeCard(parameter.get(0));
         getApplication().tossCard();
-        BibergangGamePrinter.printGame(System.out, getApplication());
+        getApplication().endPlayersTurn();
+//        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

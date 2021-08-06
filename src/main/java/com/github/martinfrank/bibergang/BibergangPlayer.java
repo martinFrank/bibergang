@@ -4,7 +4,9 @@ import com.github.martinfrank.boardgamelib.BasePlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class BibergangPlayer extends BasePlayer<BibergangBoard> {
 
@@ -26,7 +28,7 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
     public void performAiTurn() {
         LOG.debug("{} is working on its bibergang move", getName());
         BibergangBoard board = getBoardGame();
-        board.startPlayersTurn();
+//        board.startPlayersTurn();
 
         //logic here
 
@@ -73,8 +75,9 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
         hasDrawn = true;
     }
 
+    //FIXME better name
     public boolean hasOptionFour() {
-        return getAmountRevealedCards() == 1;
+        return getAmountRevealedCards() == BibergangGame.AMOUNT_CARD_COLUMNS*2-1;
     }
 
     public void setCardById(BibergangCard card, String id) {
@@ -87,20 +90,11 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
     }
 
     public boolean hasKnocked() {
-        return getAmountRevealedCards() == 0;
+        return getAmountRevealedCards() == 2 * BibergangGame.AMOUNT_CARD_COLUMNS;
     }
 
     private int getAmountRevealedCards(){
-        int amountUnrevealedCards = 0;
-        for(BibergangCardColumn column: columns){
-            if (!column.topCard.isRevealed() ){
-                amountUnrevealedCards = amountUnrevealedCards + 1;
-            }
-            if (!column.bottomCard.isRevealed() ){
-                amountUnrevealedCards = amountUnrevealedCards + 1;
-            }
-        }
-        return amountUnrevealedCards;
+        return (int)columnCardStream().filter(BibergangCard::isRevealed).count();
     }
 
     public BibergangCard moveBiber(BibergangCard biber) {
@@ -128,9 +122,33 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
     }
 
     public void revealAll() {
-        for( BibergangCardColumn column: columns){
-            column.topCard.reveal();
-            column.bottomCard.reveal();
+        columnCardStream().forEach(BibergangCard::reveal);
+    }
+
+    public Stream<BibergangCard> columnCardStream(){
+        BibergangCard[] cards = new BibergangCard[BibergangGame.AMOUNT_CARD_COLUMNS*2];
+        for (int i = 0; i < BibergangGame.AMOUNT_CARD_COLUMNS;i++){
+            BibergangCardColumn column = columns[i];
+            cards[2*i] = column.topCard;
+            cards[2*i+1] = column.bottomCard;
         }
+        return Arrays.stream(cards);
+    }
+
+    public int getTotalScore(){
+        int total = 0;
+        for(BibergangCardColumn column: columns){
+            if(column.isPair() ){
+                total = total - 5;
+            }else{
+                total = total + column.topCard.getValue();
+                total = total + column.bottomCard.getValue();
+            }
+        }
+        return total;
+    }
+
+    public boolean hasHiddenCards() {
+        return getAmountRevealedCards() > 0;
     }
 }
