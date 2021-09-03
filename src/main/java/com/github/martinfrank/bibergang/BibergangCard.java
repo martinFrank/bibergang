@@ -62,5 +62,12 @@ public class BibergangCard {
         return type == CardType.BIBER;
     }
 
+    public boolean isPair(BibergangCard other) {
+        if (!other.isRevealed){
+            throw new IllegalArgumentException("pairing card candidate HAS TO BE REVEALED!");
+        }
+        return isRevealed() && value == other.getValue();
+    }
+
     public enum CardType {VALUE, BIBER}
 }

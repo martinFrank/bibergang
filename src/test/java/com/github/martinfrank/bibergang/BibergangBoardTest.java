@@ -1,7 +1,11 @@
 package com.github.martinfrank.bibergang;
 
+import com.github.martinfrank.boardgamelib.BoardGameSetup;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BibergangBoardTest {
 
@@ -9,6 +13,8 @@ public class BibergangBoardTest {
     public void endGameTest(){
         BibergangGame bibergangGame = new BibergangGame();
         BibergangBoard board = bibergangGame.getBoard();
+        board.setup(getSetup());
+        System.out.println("players: "+board.getPlayers());
 
         BibergangPlayer playerYou = board.getCurrentPlayer();
         for(int i = 1; i < 6; i ++){
@@ -42,5 +48,24 @@ public class BibergangBoardTest {
         Assert.assertTrue(playerYou.hasKnocked());
         Assert.assertTrue(playerCpu.hasKnocked());
         Assert.assertTrue(board.haveAllFinishLastTurn());
+    }
+
+    public BoardGameSetup<BibergangPlayer> getSetup(){
+        return new BoardGameSetup<BibergangPlayer>(){
+
+            @Override
+            public List<BibergangPlayer> getPlayers() {
+                ArrayList<BibergangPlayer> player = new ArrayList<>();
+                player.add(new BibergangPlayer("P_1", 0xFFFF00, true));
+                player.add(new BibergangPlayer("P_2", 0x0000FF, true));
+                return player;
+            }
+
+            @Override
+            public int getMaximumRounds() {
+                return 0;
+            }
+        };
+
     }
 }

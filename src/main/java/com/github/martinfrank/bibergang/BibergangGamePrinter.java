@@ -129,6 +129,7 @@ public class BibergangGamePrinter {
         int innerLineLength = 6 * BibergangGame.AMOUNT_CARD_COLUMNS+1;
         lines.add("┌"+fill("─",innerLineLength)+"┐");
         lines.add("│ Player: "+left(player.getName(), innerLineLength-10)+" │");
+        lines.add("│ Points: "+left(""+player.getTotalOfVisibleScore(), innerLineLength-10)+" │");
         lines.add("├"+fill("─",innerLineLength)+"┤");
         String topTopCardLine = "│ ";
         String topMiddleCardLine = "│ ";

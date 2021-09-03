@@ -50,4 +50,22 @@ public class BibergangCardColumn {
         }
         return topCard.getValue() == bottomCard.getValue();
     }
+
+    public boolean isVisiblePair() {
+        if(topCard.isRevealed() && bottomCard.isRevealed() ){
+            if (topCard.isBiber() || bottomCard.isBiber() ){
+                return true;
+            }
+            return topCard.getValue() == bottomCard.getValue();
+        }
+        return false;
+    }
+
+    public String getTopCardId(){
+        return topCardId;
+    }
+
+    public String getBottomCardId(){
+        return bottomCardId;
+    }
 }

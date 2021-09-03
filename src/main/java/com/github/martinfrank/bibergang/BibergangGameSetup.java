@@ -20,7 +20,7 @@ public class BibergangGameSetup implements BoardGameSetup<BibergangPlayer>  {
         player.add(new BibergangPlayer("YOU", 0xFFFF00, true));
         for(int i = 1; i < amountPlayers; i ++) {
 //            player.add(new BibergangPlayer("CPU"+i, 0x0000FF, false));
-            player.add(new BibergangPlayer("CPU"+i, 0x0000FF, true));
+            player.add(new BibergangPlayer("CPU"+i, 0x0000FF, false));
         }
         return player;
     }
