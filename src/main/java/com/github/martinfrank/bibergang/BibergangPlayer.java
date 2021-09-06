@@ -50,6 +50,7 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
             LOGGER.debug("{} wants to take a biber card ({})into the dec ({})", getName(), card.getValue(), biberSlotId);
             getBoardGame().exchangeCard(biberSlotId);
             getBoardGame().tossCard();
+            return;
         }
 
         Optional<PairCardColumn> pairColumn = findPairColumnFor(card);
@@ -163,12 +164,27 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
             LOGGER.debug("{} wants to take a biber card ({})into the dec ({})", getName(), card.getValue(), biberSlotId);
             getBoardGame().exchangeCard(biberSlotId);
             getBoardGame().tossCard();
+            return;
         }
 
+        //FIXME - prüfen ob ich damit das spiel beende und ggf punkte checken - bei niedrigen punkten abbruch!!
         Optional<PairCardColumn> pairColumn = findPairColumnFor(card);
         if (pairColumn.isPresent()) {
-
+            exchangeToPair(pairColumn.get());
+            return;
         }
+
+        //FIXME - prüfen ob ich damit das spiel beende und ggf punkte checken - bei niedrigen punkten abbruch!!
+        //teure karte ersetzen
+        List<ExchangeCardOption> exchangeCardOptions = getCardExchangeOptions(card);
+        if (!exchangeCardOptions.isEmpty() && exchangeCardOptions.stream().anyMatch(e -> e.diff >= 7)) {
+            exchangeHighValueCard(exchangeCardOptions);
+            return;
+        }
+
+        //you must first reveal one card of your hand - rules are rules
+        LOGGER.debug("{} tosses a card ({}) back on the without revealing last card.", getName(), card.getValue());
+        getBoardGame().tossCard();
     }
 
 
