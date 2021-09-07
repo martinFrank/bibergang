@@ -168,5 +168,31 @@ public class PlayerAiExchangeTest {
         Assert.assertEquals(BibergangCard.mapIndex(6), decisionExchangeOnUnknown.getExchangeId());
     }
 
+    @Test
+    public void testMoveBiberCard() {
+        List<BibergangCard> handCards = Arrays.asList(
+                card(11, true),
+                card(12, false),
+                card(11, false),
+                card(12, true),
+                card(11, true),
+                card(12, false),
+                biber(true),
+                card(12, true)
+        );
+        testDataProvider.setPlayerCards(handCards);
+
+        testDataProvider.drawCard(card(12,true));
+        ExchangeOrTossCardDecsion decision = testDataProvider.player.decideExchangeOrTossCard();
+        Assert.assertEquals(ExchangeOrTossCardDecsion.DecisionType.EXCHANGE, decision.type);
+        List<String> indexes = Arrays.asList("G", "H");
+        Assert.assertTrue(indexes.contains( decision.getExchangeId()));
+
+        //nach dem Austausch sollte der Biber auf D sein
+        testDataProvider.player.exchangeOrToss(decision);
+        testDataProvider.printHandCards();
+        Assert.assertTrue(testDataProvider.player.getCardById(BibergangCard.mapIndex(2)).isBiber());
+    }
+
 
 }

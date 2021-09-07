@@ -20,7 +20,6 @@ public class BibergangGame implements CommandProvider, CommandInterpreterProvide
         commandInterpreter = new CommandInterpreter(bibergangGameCommandProvider);
 
         board.setup(new BibergangGameSetup(2));
-//        board.initGame();
     }
 
 

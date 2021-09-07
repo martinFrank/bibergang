@@ -31,15 +31,6 @@ public class BibergangCardColumn {
         }
     }
 
-    public BibergangCard getPairCard(String id) {
-        if(topCardId.equalsIgnoreCase(id)){
-            return bottomCard;
-        }
-        if(bottomCardId.equalsIgnoreCase(id)){
-            return topCard;
-        }
-        return null;
-    }
 
     public boolean isPair() {
         if (topCard.isBiber()){

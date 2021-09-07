@@ -9,10 +9,6 @@ public class BibergangCardStack {
 
     private final List<BibergangCard> stack = new ArrayList<>();
 
-    public boolean isEmpty() {
-        return stack.isEmpty();
-    }
-
     public int size() {
         return stack.size();
     }
@@ -24,15 +20,6 @@ public class BibergangCardStack {
     public void clear() {
         stack.clear();
     }
-
-    public void shuffle() {
-        Collections.shuffle(stack);
-    }
-
-    public void addAll(BibergangCardStack other) {
-        stack.addAll(other.stack);
-    }
-
 
     @Override
     public String toString() {

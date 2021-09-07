@@ -217,17 +217,21 @@ public class BibergangCardColumns {
     }
 
     public BibergangCard moveBiber(BibergangCard biber) {
+        List<ExchangeCardOption> options = new ArrayList<>();
         for (BibergangCardColumn column : columns) {
             if (!column.topCard.isRevealed()) {
-                BibergangCard card = column.topCard;
-                column.topCard = biber;
-                return card;
+                options.add(new ExchangeCardOption(column.getTopCardId(), column.bottomCard.getValue(), biber));
             }
             if (!column.bottomCard.isRevealed()) {
-                BibergangCard card = column.bottomCard;
-                column.bottomCard = biber;
-                return card;
+                options.add(new ExchangeCardOption(column.getBottomCardId(), column.topCard.getValue(), biber));
             }
+        }
+        if(!options.isEmpty()){
+            Collections.sort(options);
+            ExchangeCardOption option = options.get(0);
+            BibergangCard predecessor = getCardById(option.cardSlotId);
+            setCardById(biber, option.cardSlotId);
+            return predecessor;
         }
         return biber; //falls er nicht wandern kann wird er abgeworfen
     }

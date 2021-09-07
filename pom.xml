@@ -37,14 +37,14 @@
     </licenses>
 
     <properties>
-        <!--      <sonar.host.url>https://sonarcloud.io</sonar.host.url>-->
-        <!--      <sonar.login>c84fe4b72f2181e44f5b63058f214bac2db0200c</sonar.login>-->
-        <!--      <sonar.projectKey>martinFrank_somniumn</sonar.projectKey>-->
-        <!--      <sonar.organization>martinfrank-github</sonar.organization>-->
-        <!--      <sonar.language>java</sonar.language>-->
-        <!--      <sonar.java.libraries>target</sonar.java.libraries>-->
-        <!--      <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>-->
-        <!--      <sonar.scm.provider>git</sonar.scm.provider>-->
+              <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+              <sonar.login>75af69ec71fd283cf609b941d6b0ee22b2ca0db0</sonar.login>
+              <sonar.projectKey>martinFrank_bibergang</sonar.projectKey>
+              <sonar.organization>martinfrank-github</sonar.organization>
+              <sonar.language>java</sonar.language>
+              <sonar.java.libraries>target</sonar.java.libraries>
+              <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+              <sonar.scm.provider>git</sonar.scm.provider>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -177,42 +177,42 @@
         </pluginManagement>
 
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.jacoco</groupId>-->
-<!--                <artifactId>jacoco-maven-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>prepare-agent</id>-->
-<!--                        <goals>-->
-<!--                            <goal>prepare-agent</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>prepare-agent-integration</id>-->
-<!--                        <goals>-->
-<!--                            <goal>prepare-agent-integration</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>jacoco-site</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>report</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>report</id>-->
-<!--                        <phase>test</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>report</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.sonarsource.scanner.maven</groupId>-->
-<!--                <artifactId>sonar-maven-plugin</artifactId>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
