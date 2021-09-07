@@ -1,10 +1,10 @@
 package com.github.martinfrank.bibergang.command;
 
+import com.github.martinfrank.bibergang.BibergangBoard;
 import com.github.martinfrank.bibergang.BibergangGame;
+import com.github.martinfrank.bibergang.BibergangGameSetup;
 import com.github.martinfrank.cli.Command;
 import com.github.martinfrank.cli.Response;
-import com.github.martinfrank.bibergang.BibergangBoard;
-import com.github.martinfrank.bibergang.BibergangGameSetup;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class RestartCommand extends Command<BibergangBoard> {
             int amountPlayers = getAmountPlayers(list);
             board.setup(new BibergangGameSetup(amountPlayers));
             board.initGame();
-            getApplication().getPrinter().printGame(System.out, getApplication());
+            getApplication().getPrinter().printGame(getApplication());
             return Response.success();
         } catch (IllegalArgumentException e) { //also handles NumberformatException
             return Response.fail("restart command requires amount of players (2.."+BibergangGame.MAX_AMOUNT_PLAYER+") as parameter!");

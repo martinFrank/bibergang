@@ -22,7 +22,7 @@ public class BibergangBoardTest {
             card.reveal();
             playerYou.setCardById(card, BibergangCard.mapIndex(i));
         }
-        board.getPrinter().printGame(System.out, board);
+        board.getPrinter().printGame(board);
         Assert.assertFalse(playerYou.hasKnocked());
         Assert.assertFalse(board.haveAllFinishLastTurn());
 

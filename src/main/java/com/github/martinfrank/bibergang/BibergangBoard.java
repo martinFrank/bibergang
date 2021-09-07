@@ -15,7 +15,7 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
     private final BibergangCardStack closedStack = new BibergangCardStack();
     private final BibergangCardStack openStack = new BibergangCardStack();
     private BibergangCard currentPlayersDrawnCard = null;
-    private final BibergangGamePrinter printer = new BibergangGamePrinter();
+    private final BibergangGamePrinter printer = new BibergangGamePrinter(System.out);
 
     public BibergangBoard(CommandInterpreterProvider commandInterpreterProvider) {
         this.commandInterpreterProvider = commandInterpreterProvider;
@@ -49,15 +49,10 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         drawnCards.reveal();
         openStack.addOnTop(drawnCards);
         getPlayers().forEach(BibergangPlayer::revealStartCards);
-//        startPlayersTurn();
-//        printer.printGame(System.out, this);
     }
 
     private void addCardsToPlayers() {
-//        IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
-//                forEach(i -> getPlayers().forEach(p -> p.addStartCard(closedStack.drawTopCard())));
-
-                IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
+        IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
                 forEach(i -> getPlayers().forEach(p -> p.cols.addStartCard(closedStack.drawTopCard())));
     }
 
@@ -66,17 +61,17 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         super.startPlayersTurn();
         if (haveAllFinishLastTurn()) {
             System.out.println("GAME OVER!!!");
-//            printer.printGame(System.out, this);
+            printer.printGame(this);
             return;
         }
         getCurrentPlayer().resetDrawn();
-        printer.printGame(System.out, this);
+        printer.printGame(this);
         if (getPlayers().stream().anyMatch(BibergangPlayer::hasKnocked)) {
             System.out.println("WARNING - last round!");
         }
         if (getCurrentPlayer().isAi()) {
             getCurrentPlayer().performAiTurn();
-        }else {
+        } else {
 //        LOGGER.debug("start Players turn");
         }
     }

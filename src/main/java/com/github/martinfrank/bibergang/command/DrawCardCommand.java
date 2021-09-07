@@ -1,7 +1,6 @@
 package com.github.martinfrank.bibergang.command;
 
 import com.github.martinfrank.bibergang.BibergangBoard;
-import com.github.martinfrank.bibergang.BibergangGamePrinter;
 import com.github.martinfrank.cli.Command;
 import com.github.martinfrank.cli.Response;
 
@@ -33,13 +32,13 @@ public class DrawCardCommand extends Command<BibergangBoard>  {
 
     private Response drawClosed() {
         getApplication().drawCurrentCardFromClosed();
-        getApplication().getPrinter().printGame(System.out, getApplication());
+        getApplication().getPrinter().printGame(getApplication());
         return Response.success();
     }
 
     private Response drawOpen() {
         getApplication().drawCurrentCardFromOpen();
-        getApplication().getPrinter().printGame(System.out, getApplication());
+        getApplication().getPrinter().printGame(getApplication());
         return Response.success();
     }
 }

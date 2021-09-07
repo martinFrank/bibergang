@@ -7,33 +7,33 @@ import java.util.stream.IntStream;
 
 public class BibergangGamePrinter {
 
+    private final PrintStream stream;
 
-    public void printGame(PrintStream out, BibergangBoard board) {
-        if (board.haveAllFinishLastTurn() ){
+    public BibergangGamePrinter(PrintStream stream) {
+        this.stream = stream;
+    }
+
+
+    public void printGame(BibergangBoard board) {
+        if (board.haveAllFinishLastTurn()) {
             printEndGame(board);
-        }else{
-            printInGame(out, board);
+        } else {
+            printInGame(board);
         }
     }
 
-    private void printInGame(PrintStream out, BibergangBoard board) {
-//        if (board.haveAllFinishLastTurn() ){
-//            printInGame(out, board);
-//        }else{
-//            printEndGame(board);
-//        }
-
-        out.println();
+    private void printInGame(BibergangBoard board) {
+        stream.println();
         printPlayer(board);
         List<String> deckLines = getDeck(board);
-        deckLines.forEach(System.out::println);
+        deckLines.forEach(stream::println);
     }
 
-    private void printPlayer(BibergangBoard board){
+    private void printPlayer(BibergangBoard board) {
         List<String> playerLines = new ArrayList<>();
-        for(BibergangPlayer player: board.getPlayers()){
+        for (BibergangPlayer player : board.getPlayers()) {
             List<String> lines = getPlayerLines(player);
-            for(int i = 0; i < lines.size(); i++){
+            for (int i = 0; i < lines.size(); i++) {
                 if (playerLines.size() == i){
                     playerLines.add(lines.get(i));
                 }else{
@@ -41,19 +41,7 @@ public class BibergangGamePrinter {
                 }
             }
         }
-        playerLines.forEach(System.out::println);
-    }
-
-
-
-    private void printDeckOld(PrintStream out, BibergangBoard board) {
-        out.println();
-        out.println("+----------------------+--------------------+------------------------------------+");
-        out.println("| Nachzieh-Stapel: "+threeDigit(""+board.getClosedStack().size())+
-                " | Ablage-Stapel: "+threeDigit(""+cardOptional(board.getOpenStack().getTopCard()))+
-                " | Wer ist gerade dran?: "+ center(board.getCurrentPlayer().getName(), 5)+
-                " | gezogene Karte: "+threeDigit(cardOptional(board.getCurrentDrawnCard())+" |"));
-        out.println("+----------------------+--------------------+------------------------------------+");
+        playerLines.forEach(stream::println);
     }
 
     private List<String> getDeck(BibergangBoard board) {
@@ -79,14 +67,6 @@ public class BibergangGamePrinter {
         return center(value, 3);
     }
 
-
-    private String twelveDigit(String content) {
-//        int remaining = 12 - content.length();
-//        StringBuilder sb = new StringBuilder();
-//        IntStream.range(0,remaining).forEach(i -> sb.append(" "));
-//        return content+sb;
-        return center(content,12);
-    }
 
     private String center(String content, int length) {
         int remaining = length - content.length();
@@ -189,7 +169,7 @@ public class BibergangGamePrinter {
     }
 
     private void printEndGame(BibergangBoard board) {
-        System.out.println();
+        stream.println();
         printPlayer(board);
         StringBuilder topLine = new StringBuilder("┌───────");
         StringBuilder scoreLine = new StringBuilder("│ Score ");
@@ -207,14 +187,14 @@ public class BibergangGamePrinter {
             bottomLine.append("┴─────────");
             bottomLine.append(fill("─", player.getName().length()));
             bottomLine.append("────────");
-            bottomLine.append(fill("─", (""+player.getTotalScore()).length()+4));
+            bottomLine.append(fill("─", ("" + player.getTotalScore()).length() + 4));
         }
         topLine.append("┐");
         scoreLine.append("│");
         bottomLine.append("┘");
 
-        System.out.println(topLine);
-        System.out.println(scoreLine);
-        System.out.println(bottomLine);
+        stream.println(topLine);
+        stream.println(scoreLine);
+        stream.println(bottomLine);
     }
 }

@@ -1,11 +1,9 @@
 package com.github.martinfrank.bibergang.command;
 
+import com.github.martinfrank.bibergang.BibergangBoard;
 import com.github.martinfrank.cli.Command;
 import com.github.martinfrank.cli.Response;
-import com.github.martinfrank.bibergang.BibergangBoard;
-import com.github.martinfrank.bibergang.BibergangGamePrinter;
 
-import java.io.PrintStream;
 import java.util.List;
 
 public class ShowBoardCommand extends Command<BibergangBoard> {
@@ -15,7 +13,7 @@ public class ShowBoardCommand extends Command<BibergangBoard> {
     }
 
     void printGame(BibergangBoard board) {
-        getApplication().getPrinter().printGame(new PrintStream(System.out), board);//NOSONAR - it's a console app
+        getApplication().getPrinter().printGame(board);//NOSONAR - it's a console app
     }
 
     @Override
