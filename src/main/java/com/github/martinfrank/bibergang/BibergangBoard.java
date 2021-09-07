@@ -54,8 +54,11 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
     }
 
     private void addCardsToPlayers() {
-        IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
-                forEach(i -> getPlayers().forEach(p -> p.addStartCard(closedStack.drawTopCard())));
+//        IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
+//                forEach(i -> getPlayers().forEach(p -> p.addStartCard(closedStack.drawTopCard())));
+
+                IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS * 2).
+                forEach(i -> getPlayers().forEach(p -> p.cols.addStartCard(closedStack.drawTopCard())));
     }
 
     @Override

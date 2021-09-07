@@ -4,9 +4,9 @@ import com.github.martinfrank.bibergang.BibergangCard;
 
 public class ExchangeCardOption implements Comparable<ExchangeCardOption> {
 
-    public final String cardSlotId;
+    public final String cardSlotId; //FIXME rename to exchaningId
     public final int diff;
-    public final BibergangCard card;
+    public final BibergangCard card; //cardInPlace
 
     public ExchangeCardOption(String cardSlotId, int diff, BibergangCard card) {
         this.cardSlotId = cardSlotId;
