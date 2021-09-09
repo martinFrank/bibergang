@@ -71,7 +71,7 @@ public class TestDataProvider {
     }
 
     public BibergangGameSetup getSetup() {
-        return new BibergangGameSetup() {
+        return new BibergangGameSetup(2) {
 
             @Override
             public List<BibergangPlayer> getPlayers() {
@@ -80,10 +80,6 @@ public class TestDataProvider {
                 return players;
             }
 
-//            @Override
-//            public int getMaximumRounds() {
-//                return 0;
-//            }
         };
 
     }

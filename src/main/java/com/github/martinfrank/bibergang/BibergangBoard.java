@@ -13,7 +13,7 @@ public class BibergangBoard {
     private final List<BibergangPlayer> players = new ArrayList<>();
     private int currentPlayerIndex = 0;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BibergangGame.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BibergangBoard.class);
     private final CommandInterpreterProvider commandInterpreterProvider;
     private final BibergangCardStack closedStack = new BibergangCardStack();
     private final BibergangCardStack openStack = new BibergangCardStack();
@@ -24,20 +24,17 @@ public class BibergangBoard {
         this.commandInterpreterProvider = commandInterpreterProvider;
     }
 
-    //    @Override
     public void endPlayersTurn() {
         if (getPlayers().stream().anyMatch(BibergangPlayer::hasKnocked)) {
             getCurrentPlayer().setLastTurnPlayed();
             getCurrentPlayer().revealAll();
         }
-//        super.endPlayersTurn();//switches to next Player
 
         //switch to next Player
         currentPlayerIndex = currentPlayerIndex + 1;
         if (currentPlayerIndex == players.size()) {
             currentPlayerIndex = 0;
         }
-
         startPlayersTurn();
     }
 

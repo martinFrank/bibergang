@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
+public class BibergangPlayer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BibergangPlayer.class);
 
@@ -24,18 +24,14 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
     public final boolean isHuman;
 
     BibergangPlayer(String name, int color, boolean isHuman) {
-//        super(name, color, isHuman);
         this.name = name;
         this.color = color;
         this.isHuman = isHuman;
         cols = new BibergangCardColumns();
     }
 
-
-    //    @Override
     public void performAiTurn() {
-        LOGGER.debug("{} is working on its bibergang AI move - open card is {}", getName(), getBoardGame().getOpenStack().getTopCard().getValue());
-        BibergangBoard board = getBoardGame();
+        LOGGER.debug("{} is working on its bibergang AI move - open card is {}", getName(), board.getOpenStack().getTopCard().getValue());
         DrawFromStackDecision exchangeCardOption = decideDrawStack();
         LOGGER.debug("{} draws from {}", getName(), exchangeCardOption);
         BibergangCard card = drawCard(exchangeCardOption);
@@ -47,28 +43,28 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
 
     public void exchangeOrToss(ExchangeOrTossCardDecsion decision) {
         if(decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE){
-            getBoardGame().exchangeCard(decision.getExchangeId());
+            board.exchangeCard(decision.getExchangeId());
         }
         if(decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS){
             if(decision.getExchangeId() != null){
                 cols.getCardById(decision.getExchangeId()).reveal();
             }
         }
-        getBoardGame().tossCard();
+        board.tossCard();
     }
 
     private BibergangCard drawCard(DrawFromStackDecision exchangeCardOption) {
         if (exchangeCardOption == DrawFromStackDecision.FROM_OPEN_STACK) {
-            getBoardGame().drawCurrentCardFromOpen();
+            board.drawCurrentCardFromOpen();
         }
         if (exchangeCardOption == DrawFromStackDecision.FROM_CLOSED_STACK) {
-            getBoardGame().drawCurrentCardFromClosed();
+            board.drawCurrentCardFromClosed();
         }
-        return getBoardGame().getCurrentDrawnCard();
+        return board.getCurrentDrawnCard();
     }
 
     public DrawFromStackDecision decideDrawStack() {
-        BibergangCard openCard = getBoardGame().getOpenStack().getTopCard();
+        BibergangCard openCard = board.getOpenStack().getTopCard();
         LOGGER.debug("Open Card is {} --> which stack shall i draw from?", openCard.getDisplay());
         if (openCard.isBiber()) {
             LOGGER.debug("Open Card is Biber --> i draw from open stack");
@@ -189,12 +185,12 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
     }
 
     private ExchangeOrTossCardDecsion defaultExchangeOrTossDecison() {
-        BibergangCard drawnCard = getBoardGame().getCurrentDrawnCard();
+        BibergangCard drawnCard = board.getCurrentDrawnCard();
         LOGGER.debug("now i hold {} in my hand what shall i do with it?", drawnCard.getDisplay());
 
         Optional<PairCardColumn> biberPairColumn = cols.findBiberPairColumnFor(drawnCard);
         if (biberPairColumn.isPresent()) {
-            LOGGER.debug("i found a card to complete my biber pair, i exchange slot " + biberPairColumn.get().exchangingId);
+            LOGGER.debug("i found a card to complete my biber pair, i exchange slot {}", biberPairColumn.get().exchangingId);
             return ExchangeOrTossCardDecsion.exchange(biberPairColumn.get().exchangingId);
         }
 
@@ -202,13 +198,13 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
         if (drawnCard.isBiber() && !exchangeBiberCardOptions.isEmpty()) {
             Collections.sort(exchangeBiberCardOptions);
             ExchangeCardOption option = exchangeBiberCardOptions.get(0);
-            LOGGER.debug("i found a place for my biber: " + option.cardSlotId);
+            LOGGER.debug("i found a place for my biber: {}", option.cardSlotId);
             return ExchangeOrTossCardDecsion.exchange(option.cardSlotId);
         }
 
         Optional<PairCardColumn> pairColumn = cols.findPairColumnFor(drawnCard);
         if (pairColumn.isPresent()) {
-            LOGGER.debug("i found a card to complete my pair, i exchange slot " + pairColumn.get().exchangingId);
+            LOGGER.debug("i found a card to complete my pair, i exchange slot {}", pairColumn.get().exchangingId);
             return ExchangeOrTossCardDecsion.exchange(pairColumn.get().exchangingId);
         }
 
@@ -218,7 +214,7 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
         if (!exchangeCardOptions.isEmpty() && exchangeCardOptions.stream().anyMatch(e -> e.diff >= 7)) {
             Collections.sort(exchangeCardOptions);
             ExchangeCardOption option = exchangeCardOptions.get(0);
-            LOGGER.debug("i found a low value card to replace a high value card, i exchange slot " + option.cardSlotId);
+            LOGGER.debug("i found a low value card to replace a high value card, i exchange slot {}", option.cardSlotId);
             return ExchangeOrTossCardDecsion.exchange(option.cardSlotId);
         }
 
@@ -226,18 +222,15 @@ public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
         //falls es eine nette niedrige Karte is suche ich ein Plätzchen für sie
         //FIXME Magic numbers
         if (drawnCard.getValue() <= 4) {
-            LOGGER.debug("this low value (sweet) card gets into an unrevealed slot " + revealingId);
+            LOGGER.debug("this low value (sweet) card gets into an unrevealed slot {}", revealingId);
             return ExchangeOrTossCardDecsion.exchange(revealingId);
         }
 
         //FIXME - does not meet yet
-        LOGGER.debug("i have no use for my drawn card, i toss it and reveal " + revealingId);
+        LOGGER.debug("i have no use for my drawn card, i toss it and reveal {}", revealingId);
         return ExchangeOrTossCardDecsion.toss(revealingId);
     }
 
-    public BibergangBoard getBoardGame() {
-        return board;
-    }
 
     public void setGame(BibergangBoard board) {
         this.board = board;

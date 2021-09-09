@@ -12,13 +12,13 @@ public class BibergangGame implements CommandProvider, CommandInterpreterProvide
 
     private final BibergangGameCommandProvider bibergangGameCommandProvider;
     private final CommandInterpreter commandInterpreter;
-    private BibergangBoard board;
+    private final BibergangBoard board;
 
     BibergangGame() {
         board = new BibergangBoard(this);
         bibergangGameCommandProvider = new BibergangGameCommandProvider(board);
         commandInterpreter = new CommandInterpreter(bibergangGameCommandProvider);
-        board.setup(new BibergangGameSetup());
+        board.setup(new BibergangGameSetup(2));
     }
 
 

@@ -50,24 +50,8 @@ public class BibergangBoardTest {
     }
 
     public BibergangGameSetup getSetup() {
-//        return new BoardGameSetup<BibergangPlayer>(){
-//
-//            @Override
-//            public List<BibergangPlayer> getPlayers() {
-//                ArrayList<BibergangPlayer> player = new ArrayList<>();
-//                player.add(new BibergangPlayer("P_1", 0xFFFF00, true));
-//                player.add(new BibergangPlayer("P_2", 0x0000FF, true));
-//                return player;
-//            }
-//
-//            @Override
-//            public int getMaximumRounds() {
-//                return 0;
-//            }
-//        };
-//    }
 
-        return new BibergangGameSetup() {
+        return new BibergangGameSetup(2) {
 
             @Override
             public List<BibergangPlayer> getPlayers() {
@@ -77,10 +61,6 @@ public class BibergangBoardTest {
                 return player;
             }
 
-//            @Override
-//            public int getMaximumRounds() {
-//                return 0;
-//            }
         };
     }
 }

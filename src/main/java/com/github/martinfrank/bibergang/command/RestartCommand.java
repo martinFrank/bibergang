@@ -19,7 +19,7 @@ public class RestartCommand extends Command<BibergangBoard> {
         try {
             BibergangBoard board = getApplication();
             int amountPlayers = getAmountPlayers(list);
-            board.setup(new BibergangGameSetup());
+            board.setup(new BibergangGameSetup(amountPlayers));
             board.initGame();
             getApplication().getPrinter().printGame(getApplication());
             return Response.success();
@@ -29,7 +29,7 @@ public class RestartCommand extends Command<BibergangBoard> {
     }
 
     private int getAmountPlayers(List<String> list) {
-        if (list.size() == 0){
+        if (list.isEmpty()) {
             return BibergangGame.MAX_AMOUNT_PLAYER;
         }
         int amount = Integer.parseInt(list.get(0));
