@@ -32,7 +32,7 @@ public class BibergangCardStack {
     }
 
     public BibergangCard getTopCard() {
-        if(stack.size() == 0){
+        if (stack.isEmpty()) {
             return null;
         }
         return stack.get(stack.size()-1);

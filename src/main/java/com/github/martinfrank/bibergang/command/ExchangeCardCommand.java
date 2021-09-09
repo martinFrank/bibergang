@@ -2,7 +2,6 @@ package com.github.martinfrank.bibergang.command;
 
 import com.github.martinfrank.bibergang.BibergangBoard;
 import com.github.martinfrank.bibergang.BibergangCard;
-import com.github.martinfrank.bibergang.BibergangGamePrinter;
 import com.github.martinfrank.cli.Command;
 import com.github.martinfrank.cli.Response;
 
@@ -28,7 +27,6 @@ public class ExchangeCardCommand extends Command<BibergangBoard>  {
         getApplication().exchangeCard(parameter.get(0));
         getApplication().tossCard();
         getApplication().endPlayersTurn();
-//        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

@@ -19,7 +19,7 @@ public class RestartCommand extends Command<BibergangBoard> {
         try {
             BibergangBoard board = getApplication();
             int amountPlayers = getAmountPlayers(list);
-            board.setup(new BibergangGameSetup(amountPlayers));
+            board.setup(new BibergangGameSetup());
             board.initGame();
             getApplication().getPrinter().printGame(getApplication());
             return Response.success();

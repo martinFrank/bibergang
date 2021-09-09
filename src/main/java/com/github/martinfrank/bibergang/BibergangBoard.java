@@ -1,14 +1,17 @@
 package com.github.martinfrank.bibergang;
 
-import com.github.martinfrank.boardgamelib.BaseBoardGame;
-import com.github.martinfrank.boardgamelib.BoardGameSetup;
 import com.github.martinfrank.cli.CommandInterpreterProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
-public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
+public class BibergangBoard {
+
+    private final List<BibergangPlayer> players = new ArrayList<>();
+    private int currentPlayerIndex = 0;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BibergangGame.class);
     private final CommandInterpreterProvider commandInterpreterProvider;
@@ -21,26 +24,31 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         this.commandInterpreterProvider = commandInterpreterProvider;
     }
 
-    @Override
+    //    @Override
     public void endPlayersTurn() {
         if (getPlayers().stream().anyMatch(BibergangPlayer::hasKnocked)) {
             getCurrentPlayer().setLastTurnPlayed();
             getCurrentPlayer().revealAll();
         }
-        super.endPlayersTurn();//switches to next Player
+//        super.endPlayersTurn();//switches to next Player
+
+        //switch to next Player
+        currentPlayerIndex = currentPlayerIndex + 1;
+        if (currentPlayerIndex == players.size()) {
+            currentPlayerIndex = 0;
+        }
+
         startPlayersTurn();
     }
 
-    @Override
-    public void setup(BoardGameSetup<BibergangPlayer> setup) {
-        super.setup(setup);
+    public void setup(BibergangGameSetup setup) {
+        players.clear();
+        players.addAll(setup.getPlayers());
+        players.forEach(player -> player.setGame(this));
         initGame();
-//        startPlayersTurn();
     }
 
-    @Override
     public void initGame() {
-        super.initGame();
         LOGGER.debug("init Game");
         openStack.clear();
         closedStack.newBiberCardDeck();
@@ -56,9 +64,7 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
                 forEach(i -> getPlayers().forEach(p -> p.cols.addStartCard(closedStack.drawTopCard())));
     }
 
-    @Override
     public void startPlayersTurn() {
-        super.startPlayersTurn();
         if (haveAllFinishLastTurn()) {
             System.out.println("GAME OVER!!!");
             printer.printGame(this);
@@ -71,13 +77,10 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         }
         if (getCurrentPlayer().isAi()) {
             getCurrentPlayer().performAiTurn();
-        } else {
-//        LOGGER.debug("start Players turn");
         }
     }
 
-    /*visible for testing*/
-    boolean haveAllFinishLastTurn() {
+    public boolean haveAllFinishLastTurn() {
         return getPlayers().stream().allMatch(BibergangPlayer::hasLastTurnPlayed);
     }
 
@@ -127,7 +130,6 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
         currentPlayersDrawnCard = from;
         currentPlayersDrawnCard.reveal();
         if (getCurrentPlayer().hasKnocked()) {
-            System.out.println("I KNOCKED!");
             getCurrentPlayer().setLastTurnPlayed();
         }
     }
@@ -135,5 +137,13 @@ public class BibergangBoard extends BaseBoardGame<BibergangPlayer> {
 
     public BibergangGamePrinter getPrinter() {
         return printer;
+    }
+
+    public List<BibergangPlayer> getPlayers() {
+        return players;
+    }
+
+    public BibergangPlayer getCurrentPlayer() {
+        return players.get(currentPlayerIndex);
     }
 }

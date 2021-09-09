@@ -1,6 +1,5 @@
 package com.github.martinfrank.bibergang;
 
-import com.github.martinfrank.boardgamelib.BoardGameSetup;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,8 +49,25 @@ public class BibergangBoardTest {
         Assert.assertTrue(board.haveAllFinishLastTurn());
     }
 
-    public BoardGameSetup<BibergangPlayer> getSetup(){
-        return new BoardGameSetup<BibergangPlayer>(){
+    public BibergangGameSetup getSetup() {
+//        return new BoardGameSetup<BibergangPlayer>(){
+//
+//            @Override
+//            public List<BibergangPlayer> getPlayers() {
+//                ArrayList<BibergangPlayer> player = new ArrayList<>();
+//                player.add(new BibergangPlayer("P_1", 0xFFFF00, true));
+//                player.add(new BibergangPlayer("P_2", 0x0000FF, true));
+//                return player;
+//            }
+//
+//            @Override
+//            public int getMaximumRounds() {
+//                return 0;
+//            }
+//        };
+//    }
+
+        return new BibergangGameSetup() {
 
             @Override
             public List<BibergangPlayer> getPlayers() {
@@ -61,11 +77,10 @@ public class BibergangBoardTest {
                 return player;
             }
 
-            @Override
-            public int getMaximumRounds() {
-                return 0;
-            }
+//            @Override
+//            public int getMaximumRounds() {
+//                return 0;
+//            }
         };
-
     }
 }

@@ -4,7 +4,6 @@ import com.github.martinfrank.bibergang.ai.DrawFromStackDecision;
 import com.github.martinfrank.bibergang.ai.ExchangeCardOption;
 import com.github.martinfrank.bibergang.ai.ExchangeOrTossCardDecsion;
 import com.github.martinfrank.bibergang.ai.PairCardColumn;
-import com.github.martinfrank.boardgamelib.BasePlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,21 +11,28 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class BibergangPlayer extends BasePlayer<BibergangBoard> {
+public class BibergangPlayer {//extends BasePlayer<BibergangBoard> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BasePlayer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BibergangPlayer.class);
 
     private boolean hasDrawn = false;
     private boolean lastTurnPlayed = false;
     public final BibergangCardColumns cols;
+    private BibergangBoard board;
+    public final String name;
+    public final int color;
+    public final boolean isHuman;
 
     BibergangPlayer(String name, int color, boolean isHuman) {
-        super(name, color, isHuman);
+//        super(name, color, isHuman);
+        this.name = name;
+        this.color = color;
+        this.isHuman = isHuman;
         cols = new BibergangCardColumns();
     }
 
 
-    @Override
+    //    @Override
     public void performAiTurn() {
         LOGGER.debug("{} is working on its bibergang AI move - open card is {}", getName(), getBoardGame().getOpenStack().getTopCard().getValue());
         BibergangBoard board = getBoardGame();
@@ -219,7 +225,7 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
         String revealingId = cols.findUnrevealedSlotId();
         //falls es eine nette niedrige Karte is suche ich ein Plätzchen für sie
         //FIXME Magic numbers
-        if(drawnCard.getValue() <= 4){
+        if (drawnCard.getValue() <= 4) {
             LOGGER.debug("this low value (sweet) card gets into an unrevealed slot " + revealingId);
             return ExchangeOrTossCardDecsion.exchange(revealingId);
         }
@@ -227,5 +233,21 @@ public class BibergangPlayer extends BasePlayer<BibergangBoard> {
         //FIXME - does not meet yet
         LOGGER.debug("i have no use for my drawn card, i toss it and reveal " + revealingId);
         return ExchangeOrTossCardDecsion.toss(revealingId);
+    }
+
+    public BibergangBoard getBoardGame() {
+        return board;
+    }
+
+    public void setGame(BibergangBoard board) {
+        this.board = board;
+    }
+
+    public boolean isHuman() {
+        return isHuman;
+    }
+
+    public String getName() {
+        return name;
     }
 }

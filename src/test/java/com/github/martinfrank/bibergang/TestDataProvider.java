@@ -1,7 +1,5 @@
 package com.github.martinfrank.bibergang;
 
-import com.github.martinfrank.boardgamelib.BoardGameSetup;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,11 +67,11 @@ public class TestDataProvider {
     }
 
     public void printOpenStack() {
-        System.out.println("Open card: "+bibergangBoard.getOpenStack().getTopCard());
+        System.out.println("Open card: " + bibergangBoard.getOpenStack().getTopCard());
     }
 
-    public BoardGameSetup<BibergangPlayer> getSetup(){
-        return new BoardGameSetup<BibergangPlayer>(){
+    public BibergangGameSetup getSetup() {
+        return new BibergangGameSetup() {
 
             @Override
             public List<BibergangPlayer> getPlayers() {
@@ -82,10 +80,10 @@ public class TestDataProvider {
                 return players;
             }
 
-            @Override
-            public int getMaximumRounds() {
-                return 0;
-            }
+//            @Override
+//            public int getMaximumRounds() {
+//                return 0;
+//            }
         };
 
     }

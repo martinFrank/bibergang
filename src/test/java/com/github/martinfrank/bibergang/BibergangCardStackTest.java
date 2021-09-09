@@ -2,12 +2,8 @@ package com.github.martinfrank.bibergang;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BibergangCardStackTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(BibergangCardStackTest.class);
 
     @Test
     public void getTopCardTest(){
@@ -17,13 +13,6 @@ public class BibergangCardStackTest {
         cardDeck.addOnTop(first);
         cardDeck.addOnTop(second);
         Assert.assertEquals(second, cardDeck.getTopCard());
-    }
-
-    @Test
-    public void allCardTest(){
-        BibergangCardStack cardDeck = new BibergangCardStack();
-        cardDeck.newBiberCardDeck();
-        cardDeck.getCards().forEach(c -> LOGGER.debug("Card: {}",c));
     }
 
     @Test
@@ -38,4 +27,5 @@ public class BibergangCardStackTest {
         Assert.assertEquals(second, drawn);
         Assert.assertEquals(size-1, cardDeck.size());
     }
+
 }

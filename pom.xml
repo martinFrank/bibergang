@@ -80,12 +80,6 @@
       </dependency>
       <dependency>
           <groupId>com.github.martinfrank</groupId>
-          <artifactId>boardgamelib</artifactId>
-          <version>0.1.0</version>
-          <scope>compile</scope>
-      </dependency>
-      <dependency>
-          <groupId>com.github.martinfrank</groupId>
           <artifactId>cli</artifactId>
           <version>0.2.2</version>
       </dependency>

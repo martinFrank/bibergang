@@ -8,7 +8,6 @@ import com.github.martinfrank.cli.DefaultCommandList;
 public class BibergangGameCommandProvider implements CommandProvider {
 
     private final BibergangBoard board;
-//    private final EndTurnCommand endTurnCommand;
     private final ShowBoardCommand showBoardCommand;
     private final RestartCommand restartCommand;
     private final OptionCommand optionCommand;
@@ -21,7 +20,6 @@ public class BibergangGameCommandProvider implements CommandProvider {
     BibergangGameCommandProvider(BibergangBoard board) {
         super();
         this.board = board;
-//        endTurnCommand = new EndTurnCommand(board);
         showBoardCommand = new ShowBoardCommand(board);
         restartCommand = new RestartCommand(board);
         helpCommand = new HelpCommand(board);
@@ -47,9 +45,6 @@ public class BibergangGameCommandProvider implements CommandProvider {
             commandMapping.add(tossCardCommand);
             commandMapping.add(exchangeCommand);
         }
-//        if(board.getCurrentDrawnCard() == null && board.getCurrentPlayer().hasDrawn()){
-//            commandMapping.add(endTurnCommand);
-//        }
         return commandMapping;
     }
 }

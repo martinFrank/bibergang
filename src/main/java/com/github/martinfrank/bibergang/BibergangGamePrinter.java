@@ -106,47 +106,47 @@ public class BibergangGamePrinter {
 
     private List<String> getPlayerLines(BibergangPlayer player){
         List<String> lines = new ArrayList<>();
-        int innerLineLength = 6 * BibergangGame.AMOUNT_CARD_COLUMNS+1;
-        lines.add("┌"+fill("─",innerLineLength)+"┐");
-        lines.add("│ Player: "+left(player.getName(), innerLineLength-10)+" │");
-        lines.add("│ Points: "+left(""+player.getTotalOfVisibleScore(), innerLineLength-10)+" │");
-        lines.add("├"+fill("─",innerLineLength)+"┤");
-        String topTopCardLine = "│ ";
-        String topMiddleCardLine = "│ ";
-        String topBottomCardLine = "│ ";
-        for (int index = 0; index < BibergangGame.AMOUNT_CARD_COLUMNS; index ++){
-            String id = BibergangCard.mapIndex(index*2);
+        int innerLineLength = 6 * BibergangGame.AMOUNT_CARD_COLUMNS + 1;
+        lines.add("┌" + fill("─", innerLineLength) + "┐");
+        lines.add("│ Player: " + left(player.getName(), innerLineLength - 10) + " │");
+        lines.add("│ Points: " + left("" + player.getTotalOfVisibleScore(), innerLineLength - 10) + " │");
+        lines.add("├" + fill("─", innerLineLength) + "┤");
+        StringBuilder topTopCardLine = new StringBuilder("│ ");
+        StringBuilder topMiddleCardLine = new StringBuilder("│ ");
+        StringBuilder topBottomCardLine = new StringBuilder("│ ");
+        for (int index = 0; index < BibergangGame.AMOUNT_CARD_COLUMNS; index++) {
+            String id = BibergangCard.mapIndex(index * 2);
             List<String> cardSlot = cardSlot(id, threeDigit(player.getCardById(id).getDisplay()));
-            topTopCardLine = topTopCardLine + cardSlot.get(0)+" ";
-            topMiddleCardLine = topMiddleCardLine + cardSlot.get(1)+" ";
-            topBottomCardLine = topBottomCardLine + cardSlot.get(2)+" ";
+            topTopCardLine.append(cardSlot.get(0)).append(" ");
+            topMiddleCardLine.append(cardSlot.get(1)).append(" ");
+            topBottomCardLine.append(cardSlot.get(2)).append(" ");
         }
-        topTopCardLine = topTopCardLine + "│";
-        topMiddleCardLine = topMiddleCardLine + "│";
-        topBottomCardLine = topBottomCardLine + "│";
-        lines.add(topTopCardLine);
-        lines.add(topMiddleCardLine);
-        lines.add(topBottomCardLine);
+        topTopCardLine.append("│");
+        topMiddleCardLine.append("│");
+        topBottomCardLine.append("│");
+        lines.add(topTopCardLine.toString());
+        lines.add(topMiddleCardLine.toString());
+        lines.add(topBottomCardLine.toString());
 
 
-        String bottomTopCardLine = "│ ";
-        String bottomMiddleCardLine = "│ ";
-        String bottomBottomCardLine = "│ ";
-        for (int index = 0; index < BibergangGame.AMOUNT_CARD_COLUMNS; index ++){
-            String id = BibergangCard.mapIndex(index*2+1);
+        StringBuilder bottomTopCardLine = new StringBuilder("│ ");
+        StringBuilder bottomMiddleCardLine = new StringBuilder("│ ");
+        StringBuilder bottomBottomCardLine = new StringBuilder("│ ");
+        for (int index = 0; index < BibergangGame.AMOUNT_CARD_COLUMNS; index++) {
+            String id = BibergangCard.mapIndex(index * 2 + 1);
             List<String> cardSlot = cardSlot(id, threeDigit(player.getCardById(id).getDisplay()));
-            bottomTopCardLine = bottomTopCardLine + cardSlot.get(0)+" ";
-            bottomMiddleCardLine = bottomMiddleCardLine + cardSlot.get(1)+" ";
-            bottomBottomCardLine = bottomBottomCardLine + cardSlot.get(2)+" ";
+            bottomTopCardLine.append(cardSlot.get(0)).append(" ");
+            bottomMiddleCardLine.append(cardSlot.get(1)).append(" ");
+            bottomBottomCardLine.append(cardSlot.get(2)).append(" ");
         }
-        bottomTopCardLine = bottomTopCardLine + "│";
-        bottomMiddleCardLine = bottomMiddleCardLine + "│";
-        bottomBottomCardLine = bottomBottomCardLine + "│";
-        lines.add(bottomTopCardLine);
-        lines.add(bottomMiddleCardLine);
-        lines.add(bottomBottomCardLine);
+        bottomTopCardLine.append("│");
+        bottomMiddleCardLine.append("│");
+        bottomBottomCardLine.append("│");
+        lines.add(bottomTopCardLine.toString());
+        lines.add(bottomMiddleCardLine.toString());
+        lines.add(bottomBottomCardLine.toString());
 
-        lines.add("└"+fill("─",innerLineLength)+"┘");
+        lines.add("└" + fill("─", innerLineLength) + "┘");
         return lines;
     }
 
