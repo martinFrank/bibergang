@@ -2,7 +2,8 @@ package com.github.martinfrank.bibergang.ai;
 
 public class ExchangeOrTossCardDecsion {
 
-    public enum DecisionType {EXCHANGE, TOSS};
+    public enum DecisionType {EXCHANGE, TOSS}
+
     public final DecisionType type;
     private final String exchangingId;
 
