@@ -27,13 +27,7 @@ public class BibergangCardColumns {
 
     public Optional<PairCardColumn> findPairColumnFor(BibergangCard openCard) {
         for (BibergangCardColumn column : columns) {
-            if (column.topCard.isRevealed() && column.bottomCard.isRevealed() && column.topCard.isPair(column.bottomCard)) {
-                continue;
-            }
-            if (column.topCard.isRevealed() && column.topCard.isBiber() && column.bottomCard.isRevealed()) {
-                continue;
-            }
-            if (column.bottomCard.isRevealed() && column.bottomCard.isBiber() && column.topCard.isRevealed()) {
+            if (column.isVisiblePair()) {
                 continue;
             }
 

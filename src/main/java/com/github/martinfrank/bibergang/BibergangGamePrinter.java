@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 
 public class BibergangGamePrinter {
 
+    private static final int PRINT_CARD_SIZE = 3;
+
     private final PrintStream stream;
 
     public BibergangGamePrinter(PrintStream stream) {
@@ -52,33 +54,33 @@ public class BibergangGamePrinter {
         lines.add(cardCounterLine);
         lines.add("├─────────────────────────┤");
         lines.add("│ ┌C──┐   ┌O──┐     ┌D──┐ │");
-        String cardValues ="│ │ ? │   │"+ center("" + cardOptional(board.getOpenStack().getTopCard()), 3)+
-                "│     │"+ center(cardOptional(board.getCurrentDrawnCard()),3)+"│ │";
+        String cardValues = "│ │ ? │   │" + center("" + cardOptional(board.getOpenStack().getTopCard())) +
+                "│     │" + center(cardOptional(board.getCurrentDrawnCard())) + "│ │";
         lines.add(cardValues);
         lines.add("│ └───┘   └───┘     └───┘ │");
         lines.add("├─────────────────────────┤");
-        lines.add("│ Player: "+left(board.getCurrentPlayer().getName(), 15)+" │");
+        lines.add("│ Player: " + left(board.getCurrentPlayer().getName(), 15) + " │");
         lines.add("└─────────────────────────┘");
         return lines;
 
     }
 
-    private String threeDigit(String value ){
-        return center(value, 3);
+    private String threeDigit(String value) {
+        return center(value);
     }
 
 
-    private String center(String content, int length) {
-        int remaining = length - content.length();
-        String result = content;
-        for(int i = 0; i < remaining; i ++){
-            if (i % 2 == 0){
-                result = result + " ";
-            }else{
-                result = " " + result;
+    private String center(String content) {
+        int remaining = PRINT_CARD_SIZE - content.length();
+        StringBuilder result = new StringBuilder(content);
+        for (int i = 0; i < remaining; i++) {
+            if (i % 2 == 0) {
+                result.append(" ");
+            } else {
+                result.insert(0, " ");
             }
         }
-        return result;
+        return result.toString();
     }
 
     private String cardOptional(BibergangCard card){
@@ -151,7 +153,6 @@ public class BibergangGamePrinter {
     }
 
     private String left(String content, int length) {
-
         if (content.length() > length){
             content = content.substring(0,length-1);
         }

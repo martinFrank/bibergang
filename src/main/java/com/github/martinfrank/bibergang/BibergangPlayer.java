@@ -1,9 +1,6 @@
 package com.github.martinfrank.bibergang;
 
-import com.github.martinfrank.bibergang.ai.DrawFromStackDecision;
-import com.github.martinfrank.bibergang.ai.ExchangeCardOption;
-import com.github.martinfrank.bibergang.ai.ExchangeOrTossCardDecsion;
-import com.github.martinfrank.bibergang.ai.PairCardColumn;
+import com.github.martinfrank.bibergang.ai.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +39,11 @@ public class BibergangPlayer {
     }
 
     public void exchangeOrToss(ExchangeOrTossCardDecsion decision) {
-        if(decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE){
+        if (decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE) {
             board.exchangeCard(decision.getExchangeId());
         }
-        if(decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS){
-            if(decision.getExchangeId() != null){
-                cols.getCardById(decision.getExchangeId()).reveal();
-            }
+        if (decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS && decision.getExchangeId() != null) {
+            cols.getCardById(decision.getExchangeId()).reveal();
         }
         board.tossCard();
     }
@@ -84,12 +79,12 @@ public class BibergangPlayer {
         }
 
         List<ExchangeCardOption> exchangeCardOptions = cols.getCardExchangeOptions(openCard);
-        if (exchangeCardOptions.stream().anyMatch(o -> o.diff >= 7)) {
-            LOGGER.debug("Open Card can make a diff over 7 --> i draw from open stack");
+        if (exchangeCardOptions.stream().anyMatch(o -> o.diff >= AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD)) {
+            LOGGER.debug("Open Card can make a diff over {}} --> i draw from open stack", AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD);
             return DrawFromStackDecision.FROM_OPEN_STACK;
         }
-        if (openCard.getValue() <= 4) {
-            LOGGER.debug("Open Card looks too sweet (<=4) to resist --> i draw from open stack");
+        if (openCard.getValue() <= AiSettings.SWEET_CARD_VALUE_LIMIT) {
+            LOGGER.debug("Open Card looks too sweet (<={}}) to resist --> i draw from open stack", AiSettings.SWEET_CARD_VALUE_LIMIT);
             return DrawFromStackDecision.FROM_OPEN_STACK;
         }
         LOGGER.debug("Open Card is not an option, i draw from closed");
@@ -166,16 +161,16 @@ public class BibergangPlayer {
     }
 
     public ExchangeOrTossCardDecsion decideExchangeOrTossCard() {
-        ExchangeOrTossCardDecsion decision = defaultExchangeOrTossDecison();
+        ExchangeOrTossCardDecsion decision = defaultExchangeOrTossDecision();
 
-        if(hasOptionFour() ){
-            int score = getTotalOfVisibleScore();
+        if (hasOptionFour()) {
+            int myScore = getTotalOfVisibleScore();
             String lastUnrevealedSlot = cols.getLastUnrevealedSlot();
-            if(score > 0 && decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE && decision.getExchangeId().equalsIgnoreCase(lastUnrevealedSlot)){
+            if (myScore > 0 && decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE && decision.getExchangeId().equalsIgnoreCase(lastUnrevealedSlot)) {
                 //ich würde das spiel beenden, aber das würde mich nur viel punkte kosten, daher tosse ich die Karte
                 return ExchangeOrTossCardDecsion.toss(null);
             }
-            if(decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS){
+            if (decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS) {
                 //toss ohne austausch!
                 return ExchangeOrTossCardDecsion.toss(null);
             }
@@ -184,7 +179,7 @@ public class BibergangPlayer {
         return decision;
     }
 
-    private ExchangeOrTossCardDecsion defaultExchangeOrTossDecison() {
+    private ExchangeOrTossCardDecsion defaultExchangeOrTossDecision() {
         BibergangCard drawnCard = board.getCurrentDrawnCard();
         LOGGER.debug("now i hold {} in my hand what shall i do with it?", drawnCard.getDisplay());
 
@@ -210,8 +205,7 @@ public class BibergangPlayer {
 
         //eine hohe ersetzen
         List<ExchangeCardOption> exchangeCardOptions = cols.getCardExchangeOptions(drawnCard);
-        //FIXME Magic Numbers
-        if (!exchangeCardOptions.isEmpty() && exchangeCardOptions.stream().anyMatch(e -> e.diff >= 7)) {
+        if (!exchangeCardOptions.isEmpty() && exchangeCardOptions.stream().anyMatch(e -> e.diff >= AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD)) {
             Collections.sort(exchangeCardOptions);
             ExchangeCardOption option = exchangeCardOptions.get(0);
             LOGGER.debug("i found a low value card to replace a high value card, i exchange slot {}", option.cardSlotId);
@@ -220,13 +214,11 @@ public class BibergangPlayer {
 
         String revealingId = cols.findUnrevealedSlotId();
         //falls es eine nette niedrige Karte is suche ich ein Plätzchen für sie
-        //FIXME Magic numbers
-        if (drawnCard.getValue() <= 4) {
+        if (drawnCard.getValue() <= AiSettings.SWEET_CARD_VALUE_LIMIT) {
             LOGGER.debug("this low value (sweet) card gets into an unrevealed slot {}", revealingId);
             return ExchangeOrTossCardDecsion.exchange(revealingId);
         }
 
-        //FIXME - does not meet yet
         LOGGER.debug("i have no use for my drawn card, i toss it and reveal {}", revealingId);
         return ExchangeOrTossCardDecsion.toss(revealingId);
     }

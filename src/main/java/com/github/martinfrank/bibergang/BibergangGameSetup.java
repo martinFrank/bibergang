@@ -11,7 +11,6 @@ public class BibergangGameSetup {
         this.amountPlayers = amountPlayers;
     }
 
-    //    @Override
     public List<BibergangPlayer> getPlayers() {
         ArrayList<BibergangPlayer> player = new ArrayList<>();
         player.add(new BibergangPlayer("YOU", 0xFFFF00, true));
@@ -21,8 +20,4 @@ public class BibergangGameSetup {
         return player;
     }
 
-//    @Override
-//    public int getMaximumRounds() {
-//        return 0;
-//    }
 }
