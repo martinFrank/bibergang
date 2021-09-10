@@ -16,6 +16,10 @@ public class BibergangCardColumns {
         IntStream.range(0, BibergangGame.AMOUNT_CARD_COLUMNS).forEach(i -> columns[i] = new BibergangCardColumn(i));
     }
 
+    public static int amountCards() {
+        return 2 * BibergangGame.AMOUNT_CARD_COLUMNS;
+    }
+
     public void setCardById(BibergangCard card, String id) {
         for (BibergangCardColumn column : columns) {
             BibergangCard candidate = column.getCard(id);
@@ -122,7 +126,7 @@ public class BibergangCardColumns {
     }
 
     public Stream<BibergangCard> columnCardStream() {
-        BibergangCard[] cards = new BibergangCard[BibergangGame.AMOUNT_CARD_COLUMNS * 2];
+        BibergangCard[] cards = new BibergangCard[amountCards()];
         for (int i = 0; i < BibergangGame.AMOUNT_CARD_COLUMNS; i++) {
             BibergangCardColumn column = columns[i];
             cards[2 * i] = column.topCard;

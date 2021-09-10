@@ -20,8 +20,8 @@ public class RestartCommand extends Command<BibergangBoard> {
             BibergangBoard board = getApplication();
             int amountPlayers = getAmountPlayers(list);
             board.setup(new BibergangGameSetup(amountPlayers));
-            board.initGame();
-            getApplication().getPrinter().printGame(getApplication());
+//            getApplication().getPrinter().printGame(getApplication());
+            board.startPlayersTurn();
             return Response.success();
         } catch (IllegalArgumentException e) { //also handles NumberformatException
             return Response.fail("restart command requires amount of players (2.."+BibergangGame.MAX_AMOUNT_PLAYER+") as parameter!");

@@ -47,6 +47,7 @@ public class BibergangBoard {
 
     public void initGame() {
         LOGGER.debug("init Game");
+        currentPlayerIndex = 0;
         openStack.clear();
         closedStack.newBiberCardDeck();
         addCardsToPlayers();
@@ -54,6 +55,7 @@ public class BibergangBoard {
         drawnCards.reveal();
         openStack.addOnTop(drawnCards);
         getPlayers().forEach(BibergangPlayer::revealStartCards);
+        players.sort((o1, o2) -> Integer.compare(o2.getTotalOfVisibleScore(), o1.getTotalOfVisibleScore()));
     }
 
     private void addCardsToPlayers() {

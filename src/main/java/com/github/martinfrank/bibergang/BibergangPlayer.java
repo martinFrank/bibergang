@@ -117,7 +117,7 @@ public class BibergangPlayer {
 
     //FIXME better name
     public boolean hasOptionFour() {
-        return cols.getAmountRevealedCards() == BibergangGame.AMOUNT_CARD_COLUMNS * 2 - 1;
+        return cols.getAmountRevealedCards() == BibergangCardColumns.amountCards() - 1;
     }
 
     public void setCardById(BibergangCard card, String id) {
@@ -125,7 +125,7 @@ public class BibergangPlayer {
     }
 
     public boolean hasKnocked() {
-        return cols.getAmountRevealedCards() == 2 * BibergangGame.AMOUNT_CARD_COLUMNS;
+        return cols.getAmountRevealedCards() == BibergangCardColumns.amountCards();
     }
 
     public BibergangCard moveBiber(BibergangCard biber) {
@@ -167,7 +167,7 @@ public class BibergangPlayer {
             int myScore = getTotalOfVisibleScore();
             String lastUnrevealedSlot = cols.getLastUnrevealedSlot();
             if (myScore > 0 && decision.type == ExchangeOrTossCardDecsion.DecisionType.EXCHANGE && decision.getExchangeId().equalsIgnoreCase(lastUnrevealedSlot)) {
-                //ich würde das spiel beenden, aber das würde mich nur viel punkte kosten, daher tosse ich die Karte
+                //ich würde das Spiel beenden, aber das würde mich nur viel punkte kosten, daher toss ich die Karte
                 return ExchangeOrTossCardDecsion.toss(null);
             }
             if (decision.type == ExchangeOrTossCardDecsion.DecisionType.TOSS) {
