@@ -1,5 +1,6 @@
 package com.github.martinfrank.bibergang;
 
+import com.github.martinfrank.bibergang.ai.AiSettings;
 import com.github.martinfrank.bibergang.ai.ExchangeCardOption;
 import com.github.martinfrank.bibergang.ai.PairCardColumn;
 
@@ -35,17 +36,17 @@ public class BibergangCardColumns {
                 continue;
             }
 
-            if (column.topCard.isPair(openCard) && !column.bottomCard.isRevealed()) {
-                return Optional.of(new PairCardColumn(column, column.topCard, column.bottomCard, column.getBottomCardId()));
+            if (column.getTopCard().isPair(openCard) && !column.getBottomCard().isRevealed()) {
+                return Optional.of(new PairCardColumn(column, column.getTopCard(), column.getBottomCard(), column.getBottomCardId()));
             }
-            if (column.topCard.isPair(openCard) && !column.bottomCard.isPair(openCard)) {
-                return Optional.of(new PairCardColumn(column, column.topCard, column.bottomCard, column.getBottomCardId()));
+            if (column.getTopCard().isPair(openCard) && !column.getBottomCard().isPair(openCard)) {
+                return Optional.of(new PairCardColumn(column, column.getTopCard(), column.getBottomCard(), column.getBottomCardId()));
             }
-            if (column.bottomCard.isPair(openCard) && !column.topCard.isRevealed()) {
-                return Optional.of(new PairCardColumn(column, column.bottomCard, column.topCard, column.getTopCardId()));
+            if (column.getBottomCard().isPair(openCard) && !column.getTopCard().isRevealed()) {
+                return Optional.of(new PairCardColumn(column, column.getBottomCard(), column.getTopCard(), column.getTopCardId()));
             }
-            if (column.bottomCard.isPair(openCard) && !column.topCard.isPair(openCard)) {
-                return Optional.of(new PairCardColumn(column, column.bottomCard, column.topCard, column.getTopCardId()));
+            if (column.getBottomCard().isPair(openCard) && !column.getTopCard().isPair(openCard)) {
+                return Optional.of(new PairCardColumn(column, column.getBottomCard(), column.getTopCard(), column.getTopCardId()));
             }
         }
         return Optional.empty();
@@ -53,11 +54,11 @@ public class BibergangCardColumns {
 
     public Optional<PairCardColumn> findBiberPairColumnFor(BibergangCard openCard) {
         for (BibergangCardColumn column : columns) {
-            if (column.topCard.isRevealed() && column.topCard.isBiber() && column.bottomCard.isRevealed() && column.bottomCard.isPair(openCard)) {
-                return Optional.of(new PairCardColumn(column, column.bottomCard, column.topCard, column.getTopCardId()));
+            if (column.getTopCard().isRevealed() && column.getTopCard().isBiber() && column.getBottomCard().isRevealed() && column.getBottomCard().isPair(openCard)) {
+                return Optional.of(new PairCardColumn(column, column.getBottomCard(), column.getTopCard(), column.getTopCardId()));
             }
-            if (column.bottomCard.isRevealed() && column.bottomCard.isBiber() && column.topCard.isRevealed() && column.topCard.isPair(openCard)) {
-                return Optional.of(new PairCardColumn(column, column.topCard, column.bottomCard, column.getBottomCardId()));
+            if (column.getBottomCard().isRevealed() && column.getBottomCard().isBiber() && column.getTopCard().isRevealed() && column.getTopCard().isPair(openCard)) {
+                return Optional.of(new PairCardColumn(column, column.getTopCard(), column.getBottomCard(), column.getBottomCardId()));
             }
         }
         return Optional.empty();
@@ -67,8 +68,8 @@ public class BibergangCardColumns {
         List<ExchangeCardOption> exchangeCardOptions = new ArrayList<>();
         for (BibergangCardColumn column : columns) {
             if (!column.isVisiblePair()) {
-                addExchangeCard(column.topCard, openCard, exchangeCardOptions, column.getTopCardId());
-                addExchangeCard(column.bottomCard, openCard, exchangeCardOptions, column.getBottomCardId());
+                addExchangeCard(column.getTopCard(), openCard, exchangeCardOptions, column.getTopCardId());
+                addExchangeCard(column.getBottomCard(), openCard, exchangeCardOptions, column.getBottomCardId());
             }
         }
         return exchangeCardOptions;
@@ -86,12 +87,12 @@ public class BibergangCardColumns {
 
     public void addStartCard(BibergangCard card) {
         for (BibergangCardColumn column : columns) {
-            if (column.topCard == null) {
-                column.topCard = card;
+            if (column.getTopCard() == null) {
+                column.setTopCard(card);
                 return;
             }
-            if (column.bottomCard == null) {
-                column.bottomCard = card;
+            if (column.getBottomCard() == null) {
+                column.setBottomCard(card);
                 return;
             }
         }
@@ -104,19 +105,19 @@ public class BibergangCardColumns {
 
     public String findUnrevealedSlotId() {
         for (BibergangCardColumn column : randomColumns()) {
-            if (!column.topCard.isRevealed() && !column.bottomCard.isRevealed()) {
+            if (!column.getTopCard().isRevealed() && !column.getBottomCard().isRevealed()) {
                 return Math.random() < 0.5 ? column.getTopCardId() : column.getBottomCardId();
             }
         }
         for (BibergangCardColumn column : columns) {
-            if (!column.topCard.isRevealed()) {
+            if (!column.getTopCard().isRevealed()) {
                 return column.getTopCardId();
             }
-            if (!column.bottomCard.isRevealed()) {
+            if (!column.getBottomCard().isRevealed()) {
                 return column.getBottomCardId();
             }
         }
-        throw new RuntimeException("id is still null!");
+        throw new IllegalStateException("id is still null!");
     }
 
     private List<BibergangCardColumn> randomColumns() {
@@ -129,15 +130,15 @@ public class BibergangCardColumns {
         BibergangCard[] cards = new BibergangCard[amountCards()];
         for (int i = 0; i < BibergangGame.AMOUNT_CARD_COLUMNS; i++) {
             BibergangCardColumn column = columns[i];
-            cards[2 * i] = column.topCard;
-            cards[2 * i + 1] = column.bottomCard;
+            cards[2 * i] = column.getTopCard();
+            cards[2 * i + 1] = column.getBottomCard();
         }
         return Arrays.stream(cards);
     }
 
     public void revealStartCards() {
-        columns[0].topCard.reveal();
-        columns[BibergangGame.AMOUNT_CARD_COLUMNS - 1].bottomCard.reveal();
+        columns[0].getTopCard().reveal();
+        columns[BibergangGame.AMOUNT_CARD_COLUMNS - 1].getBottomCard().reveal();
     }
 
     public int getAmountRevealedCards() {
@@ -150,11 +151,11 @@ public class BibergangCardColumns {
             if (column.isVisiblePair()) {
                 total = total - 5;
             } else {
-                if (column.topCard.isRevealed()) {
-                    total = total + column.topCard.getValue();
+                if (column.getTopCard().isRevealed()) {
+                    total = total + column.getTopCard().getValue();
                 }
-                if (column.bottomCard.isRevealed()) {
-                    total = total + column.bottomCard.getValue();
+                if (column.getBottomCard().isRevealed()) {
+                    total = total + column.getBottomCard().getValue();
                 }
             }
         }
@@ -174,18 +175,17 @@ public class BibergangCardColumns {
     //wohin soll ich nur meinen Biber legen? hat die Antwort
     public List<ExchangeCardOption> getBiberCardExchangeOptions() {
         List<ExchangeCardOption> list = new ArrayList<>();
-        for(BibergangCardColumn column: getColumnsWithoutPairs()){
+        for(BibergangCardColumn column: getColumnsWithoutPairs()) {
             //first prio: biber to high value card
-            if (column.topCard.isRevealed() && !column.topCard.isBiber()){
-                list.add(new ExchangeCardOption(column.getTopCardId(), column.topCard.getValue(), column.topCard));
+            if (column.getTopCard().isRevealed() && !column.getTopCard().isBiber()) {
+                list.add(new ExchangeCardOption(column.getTopCardId(), column.getTopCard().getValue(), column.getTopCard()));
             }
-            if (column.bottomCard.isRevealed() && !column.bottomCard.isBiber()){
-                list.add(new ExchangeCardOption(column.getTopCardId(), column.bottomCard.getValue(), column.bottomCard));
+            if (column.getBottomCard().isRevealed() && !column.getBottomCard().isBiber()) {
+                list.add(new ExchangeCardOption(column.getTopCardId(), column.getBottomCard().getValue(), column.getBottomCard()));
             }
-            if(!column.topCard.isRevealed() && !column.bottomCard.isRevealed()){
-                //FIXME magic numbers
-                list.add(new ExchangeCardOption(column.getTopCardId(), 7, column.topCard));
-                list.add(new ExchangeCardOption(column.getTopCardId(), 7, column.topCard));
+            if (!column.getTopCard().isRevealed() && !column.getBottomCard().isRevealed()) {
+                list.add(new ExchangeCardOption(column.getTopCardId(), AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD, column.getTopCard()));
+                list.add(new ExchangeCardOption(column.getTopCardId(), AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD, column.getTopCard()));
             }
         }
         Collections.shuffle(list);
@@ -204,24 +204,24 @@ public class BibergangCardColumns {
 
     public String getLastUnrevealedSlot() {
         for(BibergangCardColumn column: columns){
-            if (!column.topCard.isRevealed() ){
+            if (!column.getTopCard().isRevealed()) {
                 return column.getTopCardId();
             }
-            if (!column.bottomCard.isRevealed() ){
+            if (!column.getBottomCard().isRevealed()) {
                 return column.getBottomCardId();
             }
         }
-        throw new RuntimeException("requesting for unrevealed slot even though all cards are revealed");
+        throw new IllegalStateException("requesting for unrevealed slot even though all cards are revealed");
     }
 
     public BibergangCard moveBiber(BibergangCard biber) {
         List<ExchangeCardOption> options = new ArrayList<>();
         for (BibergangCardColumn column : columns) {
-            if (!column.topCard.isRevealed()) {
-                options.add(new ExchangeCardOption(column.getTopCardId(), column.bottomCard.getValue(), biber));
+            if (!column.getTopCard().isRevealed()) {
+                options.add(new ExchangeCardOption(column.getTopCardId(), column.getBottomCard().getValue(), biber));
             }
-            if (!column.bottomCard.isRevealed()) {
-                options.add(new ExchangeCardOption(column.getBottomCardId(), column.topCard.getValue(), biber));
+            if (!column.getBottomCard().isRevealed()) {
+                options.add(new ExchangeCardOption(column.getBottomCardId(), column.getTopCard().getValue(), biber));
             }
         }
         if(!options.isEmpty()){
@@ -240,8 +240,8 @@ public class BibergangCardColumns {
             if (column.isPair()) {
                 total = total - 5;
             } else {
-                total = total + column.topCard.getValue();
-                total = total + column.bottomCard.getValue();
+                total = total + column.getTopCard().getValue();
+                total = total + column.getBottomCard().getValue();
             }
         }
         return total;

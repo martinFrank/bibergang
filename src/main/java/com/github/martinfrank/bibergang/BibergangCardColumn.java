@@ -2,18 +2,20 @@ package com.github.martinfrank.bibergang;
 
 public class BibergangCardColumn {
 
-    public BibergangCard topCard;
-    public BibergangCard bottomCard;
+    private BibergangCard topCard;
+
+
+    private BibergangCard bottomCard;
     private final String topCardId;
     private final String bottomCardId;
 
     public BibergangCardColumn(int columnIndex) {
-        topCardId = BibergangCard.mapIndex(columnIndex*2);
-        bottomCardId = BibergangCard.mapIndex(columnIndex*2+1);
+        topCardId = BibergangCard.mapIndex(columnIndex * 2);
+        bottomCardId = BibergangCard.mapIndex(columnIndex * 2 + 1);
     }
 
     public BibergangCard getCard(String id) {
-        if(topCardId.equalsIgnoreCase(id)){
+        if (topCardId.equalsIgnoreCase(id)) {
             return topCard;
         }
         if(bottomCardId.equalsIgnoreCase(id)){
@@ -43,8 +45,8 @@ public class BibergangCardColumn {
     }
 
     public boolean isVisiblePair() {
-        if(topCard.isRevealed() && bottomCard.isRevealed() ){
-            if (topCard.isBiber() || bottomCard.isBiber() ){
+        if (topCard.isRevealed() && bottomCard.isRevealed()) {
+            if (topCard.isBiber() || bottomCard.isBiber()) {
                 return true;
             }
             return topCard.getValue() == bottomCard.getValue();
@@ -52,11 +54,27 @@ public class BibergangCardColumn {
         return false;
     }
 
-    public String getTopCardId(){
+    public BibergangCard getTopCard() {
+        return topCard;
+    }
+
+    public BibergangCard getBottomCard() {
+        return bottomCard;
+    }
+
+    public String getTopCardId() {
         return topCardId;
     }
 
-    public String getBottomCardId(){
+    public String getBottomCardId() {
         return bottomCardId;
+    }
+
+    public void setTopCard(BibergangCard topCard) {
+        this.topCard = topCard;
+    }
+
+    public void setBottomCard(BibergangCard bottomCard) {
+        this.bottomCard = bottomCard;
     }
 }

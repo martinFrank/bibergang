@@ -20,7 +20,6 @@ public class RestartCommand extends Command<BibergangBoard> {
             BibergangBoard board = getApplication();
             int amountPlayers = getAmountPlayers(list);
             board.setup(new BibergangGameSetup(amountPlayers));
-//            getApplication().getPrinter().printGame(getApplication());
             board.startPlayersTurn();
             return Response.success();
         } catch (IllegalArgumentException e) { //also handles NumberformatException
