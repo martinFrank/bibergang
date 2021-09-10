@@ -4,12 +4,12 @@ import com.github.martinfrank.bibergang.BibergangCard;
 
 public class ExchangeCardOption implements Comparable<ExchangeCardOption> {
 
-    public final String cardSlotId; //FIXME rename to exchaningId
+    public final String exchangingId; //FIXME rename to exchaningId
     public final int diff;
     public final BibergangCard card; //cardInPlace
 
-    public ExchangeCardOption(String cardSlotId, int diff, BibergangCard card) {
-        this.cardSlotId = cardSlotId;
+    public ExchangeCardOption(String exchangingId, int diff, BibergangCard card) {
+        this.exchangingId = exchangingId;
         this.diff = diff;
         this.card = card;
     }
@@ -17,7 +17,7 @@ public class ExchangeCardOption implements Comparable<ExchangeCardOption> {
     @Override
     public String toString() {
         return "ExchangeCardOption{" +
-                "cardSlotId='" + cardSlotId + '\'' +
+                "exchangingId='" + exchangingId + '\'' +
                 ", diff=" + diff +
                 ", card=" + card +
                 '}';

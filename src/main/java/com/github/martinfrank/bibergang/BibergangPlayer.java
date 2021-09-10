@@ -193,8 +193,8 @@ public class BibergangPlayer {
         if (drawnCard.isBiber() && !exchangeBiberCardOptions.isEmpty()) {
             Collections.sort(exchangeBiberCardOptions);
             ExchangeCardOption option = exchangeBiberCardOptions.get(0);
-            LOGGER.debug("i found a place for my biber: {}", option.cardSlotId);
-            return ExchangeOrTossCardDecsion.exchange(option.cardSlotId);
+            LOGGER.debug("i found a place for my biber: {}", option.exchangingId);
+            return ExchangeOrTossCardDecsion.exchange(option.exchangingId);
         }
 
         Optional<PairCardColumn> pairColumn = cols.findPairColumnFor(drawnCard);
@@ -208,8 +208,8 @@ public class BibergangPlayer {
         if (!exchangeCardOptions.isEmpty() && exchangeCardOptions.stream().anyMatch(e -> e.diff >= AiSettings.EXCHANGE_CARD_DIFF_THRESHOLD)) {
             Collections.sort(exchangeCardOptions);
             ExchangeCardOption option = exchangeCardOptions.get(0);
-            LOGGER.debug("i found a low value card to replace a high value card, i exchange slot {}", option.cardSlotId);
-            return ExchangeOrTossCardDecsion.exchange(option.cardSlotId);
+            LOGGER.debug("i found a low value card to replace a high value card, i exchange slot {}", option.exchangingId);
+            return ExchangeOrTossCardDecsion.exchange(option.exchangingId);
         }
 
         String revealingId = cols.findUnrevealedSlotId();

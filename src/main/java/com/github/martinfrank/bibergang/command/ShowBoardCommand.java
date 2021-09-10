@@ -18,7 +18,6 @@ public class ShowBoardCommand extends Command<BibergangBoard> {
 
     @Override
     public Response execute(List<String> list) {
-        //FIXME print game or print endgame
         printGame(getApplication());
         return Response.success();
     }

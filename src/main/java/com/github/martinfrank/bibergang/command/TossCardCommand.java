@@ -2,7 +2,6 @@ package com.github.martinfrank.bibergang.command;
 
 import com.github.martinfrank.bibergang.BibergangBoard;
 import com.github.martinfrank.bibergang.BibergangCard;
-import com.github.martinfrank.bibergang.BibergangGamePrinter;
 import com.github.martinfrank.cli.Command;
 import com.github.martinfrank.cli.Response;
 
@@ -16,10 +15,9 @@ public class TossCardCommand extends Command<BibergangBoard>  {
 
     @Override
     public Response execute(List<String> parameter) {
-        if (parameter.size() == 0 && getApplication().getCurrentPlayer().hasOptionFour()){
+        if (parameter.isEmpty() && getApplication().getCurrentPlayer().hasOptionFour()) {
             getApplication().tossCard();
             getApplication().endPlayersTurn();
-//            getApplication().getPrinter().printGame(System.out, getApplication());
             return Response.success();
         }
 
@@ -34,7 +32,6 @@ public class TossCardCommand extends Command<BibergangBoard>  {
         card.reveal();
         getApplication().tossCard();
         getApplication().endPlayersTurn();
-//        getApplication().getPrinter().printGame(System.out, getApplication());
         return Response.success();
     }
 }

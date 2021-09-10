@@ -227,8 +227,8 @@ public class BibergangCardColumns {
         if(!options.isEmpty()){
             Collections.sort(options);
             ExchangeCardOption option = options.get(0);
-            BibergangCard predecessor = getCardById(option.cardSlotId);
-            setCardById(biber, option.cardSlotId);
+            BibergangCard predecessor = getCardById(option.exchangingId);
+            setCardById(biber, option.exchangingId);
             return predecessor;
         }
         return biber; //falls er nicht wandern kann wird er abgeworfen
