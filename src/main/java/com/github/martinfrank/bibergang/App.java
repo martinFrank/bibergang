@@ -6,6 +6,8 @@ class App {
         BibergangGame bibergangGame = new BibergangGame();
         bibergangGame.getBoard().startPlayersTurn();
         bibergangGame.getCommandInterpreter().start();
+
+        //Test comment
     }
 
 }
